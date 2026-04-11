@@ -107,4 +107,3 @@ docker commit <container_id> my_yahboom_ros:v1
 - [ ] Connect and configure the onboard webcam.
 - [ ] Implement 2D Lidar for map generation (Gmapping / Cartographer).
 - [ ] Connect another powerful edge device (e.g., NVIDIA Jetson) to run complex 3D SLAM algorithms.
-```

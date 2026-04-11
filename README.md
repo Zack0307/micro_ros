@@ -47,11 +47,6 @@ docker run -it \
 ```
 *(Note: Change `/root/my_ros2_code` to the actual path where you store your scripts on the Raspberry Pi.)*
 
-**Start the Micro-ROS Agent:**
-Inside the container, establish the connection to the lower-level STM32 board:
-```bash
-ros2 run micro_ros_agent micro_ros_agent serial --dev /dev/ttyUSB0
-```
 
 ---
 
@@ -74,9 +69,13 @@ sudo apt install ros-humble-joy*
    ```
 3. Run the custom python teleop script (e.g., `joy_ctrl.py`):
    ```bash
-   python3 joy_ctrl.py
+   ros2 run micro_ros joy
    ```
 4. **Unlock the Robot:** Press the **Start Button (Button 7)** on your gamepad to enable motor control, then use the joysticks to drive!
+5. **You can open single terminal to launch file**
+   ```bash
+   ros2 launch micro_ros micro_ros.launch.py
+   ```
 
 ---
 

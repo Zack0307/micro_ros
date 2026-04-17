@@ -8,14 +8,14 @@ def generate_launch_description():
 
     control_node = Node(
         package='micro_ros',
-        node_executable='joy',
+        executable='joy',
         emulate_tty=True
     )
 
 
     micro_ros_joy_node = Node(
         package='joy',
-        node_executable='joy_node',
+        executable='joy_node',
     )
 
 

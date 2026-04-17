@@ -20,6 +20,6 @@ def generate_launch_description():
 
 
     return LaunchDescription([
-        driver_node,
+        control_node,
         micro_ros_joy_node
     ])

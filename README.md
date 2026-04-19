@@ -61,7 +61,7 @@ sudo apt update
 sudo apt install ros-humble-joy*
 ```
 
-**Launch the Control System:**
+**Run the Control System:**
 1. Connect your USB Gamepad to the PC.
 2. Start the joy node:
    ```bash
@@ -78,7 +78,15 @@ sudo apt install ros-humble-joy*
    ```
 
 ---
-
+**Launch the all system(IN the Test.....)**
+1. Start all the simulator 
+   ```bash
+   ros2 launch micro_ros micro_ros.launch.py 
+   ```
+2. Start part of e.g rviz2,urdf
+   ```bash
+   ros2 launch micro_ros display.launch.py 
+   ```
 ## 🛠️ Troubleshooting & Tips
 
 ### Fixing "Zombie Nodes" and Duplicate Topics

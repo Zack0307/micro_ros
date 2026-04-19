@@ -39,7 +39,7 @@ class JoyTeleop(Node):
 		#create pub
 		self.pub_goal = self.create_publisher(GoalID,"move_base/cancel",10)
 		self.pub_cmdVel = self.create_publisher(Twist,'cmd_vel',10)
-		self.pub_Buzzer = self.create_publisher(UInt16,"beep",  1)
+		self.pub_Buzzer = self.create_publisher(UInt16,"beep",  1) #beep to start
 		self.pub_JoyState = self.create_publisher(Bool,"JoyState",  10)
 		self.pub_Servo1 = self.create_publisher(Int32,"servo_s1" , 10)
 		self.pub_Servo2 = self.create_publisher(Int32,"servo_s2" , 10)

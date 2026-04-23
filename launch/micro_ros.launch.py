@@ -1,6 +1,6 @@
 #final integrate
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription,AppendEnvironmentVariable
 from launch.substitutions import  LaunchConfiguration
 from launch_ros.actions import Node
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
@@ -18,12 +18,11 @@ def generate_launch_description():
     rviz_path = pkg_path / 'rviz/yahboomcar.rviz'
     world_path = pkg_path / 'world/test.sdf'
 
-    # model_arg = DeclareLaunchArgument(name='model', default_value=str(default_model_path),
-    #                                   description='Absolute path to robot urdf file')
-    # robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration('model')]),
-    #                                    value_type=str)
-    doc = xacro.process_file(default_model_path, mappings={'use_sim' : 'true'})
-    robot_description = doc.toprettyxml(indent='  ')
+    model_arg = DeclareLaunchArgument(name='model', default_value=str(default_model_path),
+                                      description='Absolute path to robot urdf file')
+    robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration('model')]),
+                                       value_type=str)
+
     #cartographer
     # use_sim_time 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
@@ -70,7 +69,13 @@ def generate_launch_description():
         ]),
         # gz_args 裡面可以換成你自己畫的 .sdf 世界檔路徑
         # -r 代表啟動後直接開始執行 (Run)，不然預設會是暫停狀態
-        launch_arguments={'gz_args': [LaunchConfiguration('world'),'.sdf',' -v 4',' -r']}.items() 
+        launch_arguments={'gz_args': [world_path, ' -v 4', ' -r']}.items() 
+    )
+
+    set_model_path = AppendEnvironmentVariable(
+    name='GZ_SIM_RESOURCE_PATH',
+    value=[PathJoinSubstitution([pkg_path, '..'])] 
+    # '..' 代表回到 share/ 目錄，這樣 Gazebo 才找得到 micro_ros 這個包
     )
 
     spawn_robot = Node(
@@ -78,9 +83,7 @@ def generate_launch_description():
         executable='create',
         arguments=[
             '-name', 'zack',         # 給你的車子取個名字
-            '-world', 'empty',               # 代表要在 Gazebo 的 world 裡面出生
-            '-topic', '/robot_description',    # 告訴 Gazebo 去哪裡拿 URDF 模型資料
-            '-string', robot_description,
+            '-topic', 'robot_description',    # 告訴 Gazebo 去哪裡拿 URDF 模型資料
             '-x', '0.0',                      # 出生點 X 座標
             '-y', '0.0',                      # 出生點 Y 座標
             '-z', '0.1'                       # 出生點 Z 座標 (稍微抬高一點避免卡進地板)
@@ -144,14 +147,15 @@ def generate_launch_description():
     return LaunchDescription([
         # control_node,
         # micro_ros_joy_node,
-        # model_arg,
+        model_arg,
+        set_model_path,
         # joint_state_publisher_gui_node,
         robot_state_publisher_node,
-        # cartographer_node,
-        # occupancy_grid_node,
+        cartographer_node,
+        occupancy_grid_node,
         tf_base_footprint_to_base_link,
         gz_sim,
         spawn_robot,
         bridge_node,
-        # rviz_node
+        rviz_node
     ])

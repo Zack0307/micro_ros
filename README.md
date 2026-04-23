@@ -20,7 +20,7 @@ To allow the PC and Raspberry Pi to communicate seamlessly, they **must be conne
 Run the following command on **both** the PC and the Raspberry Pi (you can add this to your `~/.bashrc` to make it permanent):
 
 ```bash
-export ROS_DOMAIN_ID=20
+export ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST
 ```
 
 ---
@@ -55,12 +55,16 @@ docker run -it \
 The PC handles the user input (Gamepad) and runs the python control logic.
 
 **Install Required Packages:**
-Install the ROS 2 Joy package to read gamepad inputs:
-```bash
-sudo apt update
-sudo apt install ros-humble-joy*
-```
-
+1. Install the ROS 2 Joy package to read gamepad inputs:
+   ```bash
+   sudo apt update
+   sudo apt install ros-humble-joy*
+   ```
+2. Install Cartographer slam
+   ```bash
+   sudo apt install ros-{$ROS_DISTRO}-cartographer
+   sudo apt install ros-{$ROS_DISTRO}-cartographer_ros
+   ```
 **Run the Control System:**
 1. Connect your USB Gamepad to the PC.
 2. Start the joy node:

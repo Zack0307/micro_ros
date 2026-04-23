@@ -478,4 +478,16 @@
       effort="0"
       velocity="0" />
   </joint>
+
+  <gazebo>
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+      <joint_name>yh_Joint</joint_name>  
+      <joint_name>yq_Joint</joint_name>
+      <joint_name>zh_Joint</joint_name>
+      <joint_name>zq_Joint</joint_name>
+      <joint_name>jq1_Joint</joint_name>
+      <joint_name>jq2_Joint</joint_name>
+    </plugin>
+</gazebo>
 </robot>

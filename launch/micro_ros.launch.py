@@ -45,19 +45,25 @@ def generate_launch_description():
         executable='joy_node',
     )
 
+    camera_joy = Node(
+        package = 'micro_ros',
+        executable = 'camera_control',
+    )
+
+    teleop_node = Node(
+        package='teleop_twist_keyboard',
+        executable='teleop_twist_keyboard',
+        name='teleop',
+        output='screen',
+        prefix='xterm -e'  
+    )
+
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         parameters=[{'robot_description': robot_description,
                      'use_sim_time': use_sim_time}]
     )
-
-    joint_state_publisher_gui_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui'
-    )
-
-    
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -97,9 +103,17 @@ def generate_launch_description():
         arguments=[
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-            '/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-            '/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V', # 如果 Gazebo 有發佈 TF
-            '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model'  #gz sim to ros
+            '/model/zack/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry', #gz sim to ros
+            '/model/zack/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V', # 如果 Gazebo 有發佈 TF
+            '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',  #gz sim to ros
+            '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
+            '/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/camera_pan_cmd@std_msgs/msg/Float64]gz.msgs.Double', # bridge turn left-right
+            '/camera_tilt_cmd@std_msgs/msg/Float64]gz.msgs.Double' #bridge turn up-down
+        ],
+        remappings=[
+            ('/model/zack/odometry', '/odom'),
+            ('/model/zack/tf', '/tf')
         ],
         output='screen'
     )
@@ -147,9 +161,9 @@ def generate_launch_description():
     return LaunchDescription([
         # control_node,
         # micro_ros_joy_node,
+        camera_joy,
         model_arg,
         set_model_path,
-        # joint_state_publisher_gui_node,
         robot_state_publisher_node,
         cartographer_node,
         occupancy_grid_node,
@@ -157,5 +171,6 @@ def generate_launch_description():
         gz_sim,
         spawn_robot,
         bridge_node,
-        rviz_node
+        rviz_node,
+        teleop_node
     ])

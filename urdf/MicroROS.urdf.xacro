@@ -489,5 +489,76 @@
       <joint_name>jq1_Joint</joint_name>
       <joint_name>jq2_Joint</joint_name>
     </plugin>
-</gazebo>
+  </gazebo>
+  <gazebo reference="jq2_Link">
+    <sensor name="my_camera" type="camera">
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>30</update_rate>
+      <visualize>true</visualize>
+      <topic>camera/image_raw</topic>
+      <gz_frame_id>jq2_Link</gz_frame_id>
+    </sensor>
+  </gazebo>
+  <gazebo reference="radar_Link">
+    <sensor name="my_lidar" type="gpu_lidar">
+      <update_rate>10</update_rate>
+      <visualize>true</visualize>
+      <topic>scan</topic>
+      <gz_frame_id>radar_Link</gz_frame_id> 
+      
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.15</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </lidar>
+    </sensor>
+  </gazebo>
+  <gazebo>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>jq1_Joint</joint_name>
+      <topic>camera_pan_cmd</topic> <p_gain>1.0</p_gain>          
+    </plugin>
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+      <joint_name>jq2_Joint</joint_name>
+      <topic>camera_tilt_cmd</topic> <p_gain>1.0</p_gain>
+    </plugin>
+  </gazebo>
+  <gazebo>
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <left_joint>zq_Joint</left_joint>
+      <left_joint>zh_Joint</left_joint>
+      
+      <right_joint>yq_Joint</right_joint>
+      <right_joint>yh_Joint</right_joint>
+      
+      <wheel_separation>0.135</wheel_separation>
+      <wheel_radius>0.03</wheel_radius>
+      
+      <odom_publish_frequency>30</odom_publish_frequency>
+      <topic>cmd_vel</topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
+    </plugin>
+  </gazebo>
 </robot>

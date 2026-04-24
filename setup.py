@@ -35,6 +35,7 @@ setup(
     entry_points={
         'console_scripts': [
             'joy = micro_ros.joy:main',
+            'camera_control = micro_ros.camera_control:main',
         ],
     },
 )

@@ -1,0 +1,17 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    diff_drive_controller:
+      type: diff_drive_controller/DiffDriveController
+
+diff_drive_controller:
+  ros__parameters:
+    left_wheel_names: ["zq_Joint", "zh_Joint"]
+    right_wheel_names: ["yq_Joint", "yh_Joint"]
+    wheel_separation: 0.135
+    wheel_radius: 0.03
+    use_stamped_vel: false

@@ -106,12 +106,12 @@ def generate_launch_description():
             '/model/zack/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry', #gz sim to ros
             '/model/zack/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V', # 如果 Gazebo 有發佈 TF
             '/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',  #gz sim to ros
-            '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
+            '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',   #car speed
             '/camera/image_raw@sensor_msgs/msg/Image[gz.msgs.Image',
             '/camera_pan_cmd@std_msgs/msg/Float64]gz.msgs.Double', # bridge turn left-right
             '/camera_tilt_cmd@std_msgs/msg/Float64]gz.msgs.Double' #bridge turn up-down
         ],
-        remappings=[
+        remappings=[   #gz topic -l: find correct topic name
             ('/model/zack/odometry', '/odom'),
             ('/model/zack/tf', '/tf')
         ],

@@ -544,21 +544,46 @@
       <topic>camera_tilt_cmd</topic> <p_gain>1.0</p_gain>
     </plugin>
   </gazebo>
+  <ros2_control name="GazeboSimSystem" type="system">
+  <hardware>
+    <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+  </hardware>
+  <joint name="zq_Joint">
+    <command_interface name="velocity">
+      <param name="min">-10</param>
+      <param name="max">10</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="zh_Joint">
+    <command_interface name="velocity">
+      <param name="min">-10</param>
+      <param name="max">10</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="yq_Joint">
+    <command_interface name="velocity">
+      <param name="min">-10</param>
+      <param name="max">10</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="yh_Joint">
+    <command_interface name="velocity">
+      <param name="min">-10</param>
+      <param name="max">10</param>
+    </command_interface>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  </ros2_control>
   <gazebo>
-    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
-      <left_joint>zq_Joint</left_joint>
-      <left_joint>zh_Joint</left_joint>
-      
-      <right_joint>yq_Joint</right_joint>
-      <right_joint>yh_Joint</right_joint>
-      
-      <wheel_separation>0.135</wheel_separation>
-      <wheel_radius>0.03</wheel_radius>
-      
-      <odom_publish_frequency>30</odom_publish_frequency>
-      <topic>cmd_vel</topic>
-      <frame_id>odom</frame_id>
-      <child_frame_id>base_link</child_frame_id>
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>../config/control.yaml</parameters>
     </plugin>
   </gazebo>
 </robot>
